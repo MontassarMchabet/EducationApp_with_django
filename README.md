@@ -1,7 +1,7 @@
 
 # Echooling.
 <div align="center">
-![Logo eSchooling](home/static/assets/images/logo2.png)
+
      <img src="home/static/assets/images/logo2.png" alt="Elkindy logo">
 </div>   
 ## Résumé de projet
