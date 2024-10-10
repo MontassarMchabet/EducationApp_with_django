@@ -1,14 +1,21 @@
-# Environnement virtuel
- env/
- venv/
+# Python cache files
+__pycache__/
+*.py[cod]
 
-# Fichiers Python
- *.pyc
- __pycache__/
+# Virtual environment
+venv/
+env/
+.env
 
-# Fichiers de base de données
+# Database files
 *.sqlite3
 
-# Dossiers Django
-# /static/
-# media/
+# Pytest cache
+.pytest_cache/
+
+# Logs
+*.log
+
+# IDE files
+.idea/
+.vscode/
