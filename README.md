@@ -1,6 +1,6 @@
 
 # Echooling.
-![Logo eSchooling](assets/images/logo2.png)
+![Logo eSchooling](../static/assets/images/logo2.png)
 ## Résumé de projet
 eSchooling est une plateforme éducative intégrant divers modules pour gérer les utilisateurs, les cours, les évaluations et la satisfaction des étudiants. Elle utilise l'IA pour optimiser l'expérience d'apprentissage et faciliter la gestion administrative.
 
