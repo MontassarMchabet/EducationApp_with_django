@@ -41,7 +41,9 @@ INSTALLED_APPS = [
     'home',
     'authentification',
     'satisfaction',
-   
+    'Course',
+    'Chapter',
+    'Page',
 ]
 
 MIDDLEWARE = [
