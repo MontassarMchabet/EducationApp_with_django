@@ -522,7 +522,11 @@
                     </ul>
                     <br/>
                     <!-- Delete Button -->
-                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ course.id }}">Delete</button>
+                    {% if user.is_authenticated %} 
+                        {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
+                            <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ course.id }}">Delete</button>
+                        {% endif %} 
+                    {% endif %}
 
                     <!-- Modal -->
                     <div class="modal fade" id="deleteModal{{ course.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
@@ -547,8 +551,12 @@
                     </div>
 
                     <!-- Edit Button -->
-                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ course.id }}">Edit</button>
-
+                    {% if user.is_authenticated %} 
+                        {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
+                            <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ course.id }}">Edit</button>
+                        {% endif %} 
+                    {% endif %}
+                    
                     <!-- Edit Modal -->
                     <div class="modal fade" id="editModal{{ course.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
                         <div class="modal-dialog">

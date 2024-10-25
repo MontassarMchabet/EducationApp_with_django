@@ -282,13 +282,55 @@
             >
               <div class="col-md-6">
                 <div class="all__icons">
-                  {% comment %}
                   <div class="result-count">
-                    We found 24 events available for you
+                    {% if user.is_authenticated %} 
+                        {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
+                        <div>
+                            <button
+                                type="button"
+                                class="btn btn-primary"
+                                data-bs-toggle="modal"
+                                data-bs-target="#addChapterModal"
+                            >
+                                Add Chapter
+                            </button>
+                        </div>
+                        {% endif %} 
+                    {% endif %}
                   </div>
-                  {% endcomment %}
                 </div>
               </div>
+
+
+              <!-- Add Chapter Modal -->
+              <div class="modal fade" id="addChapterModal" tabindex="-1" aria-labelledby="addChapterModalLabel" aria-hidden="true">
+                  <div class="modal-dialog">
+                      <div class="modal-content">
+                          <div class="modal-header">
+                              <h5 class="modal-title" id="addChapterModalLabel">Add Chapter</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                          </div>
+                          <div class="modal-body">
+                              <form action="{% url 'create_chapter' course.id %}" method="post">
+                                  {% csrf_token %}
+                                  <div class="mb-3">
+                                      <label for="title" class="form-label">Chapter Title</label>
+                                      <input type="text" class="form-control" id="title" name="title" required>
+                                  </div>
+                                  <div class="mb-3">
+                                      <label for="order" class="form-label">Order</label>
+                                      <input type="number" class="form-control" id="order" name="order" required>
+                                  </div>
+                                  <div class="modal-footer">
+                                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                      <button type="submit" class="btn btn-primary">Add Chapter</button>
+                                  </div>
+                              </form>
+                          </div>
+                      </div>
+                  </div>
+              </div>
+
               <div class="col-md-6 text-right">
                 <select class="from-control">
                   <option>Chapter Type: All</option>
@@ -314,6 +356,10 @@
                       <h3 class="event__card--title">
                         <a href="{% url 'page_detail' chapter_id=chapter.id page_id=1 %}">{{ chapter.title }}</a>
                       </h3>
+
+
+                      
+
                       <div class="event_location">
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -334,7 +380,7 @@
                         </svg>
                         Tunis, Tunisia
                       </div>
-                      <a class="event__card--link" href="#">
+                      <a class="event__card--link" href="{% url 'page_detail' chapter_id=chapter.id page_id=1 %}">
                         Study Now
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
@@ -351,6 +397,70 @@
                           <line x1="5" y1="12" x2="19" y2="12"></line>
                           <polyline points="12 5 19 12 12 19"></polyline></svg
                       ></a>
+                      <br/><br/>
+
+                      {% if user.is_authenticated %} 
+                        {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
+                          <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ chapter.id }}">Delete</button>
+                          <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ chapter.id }}">Edit</button>
+                        {% endif %} 
+                      {% endif %}
+
+
+                      <!-- Delete Modal -->
+                      <div class="modal fade" id="deleteModal{{ chapter.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="deleteModalLabel">Delete Chapter</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              Are you sure you want to delete the chapter "{{ chapter.title }}"?
+                            </div>
+                            <div class="modal-footer">
+                              <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                              <form action="{% url 'delete_chapter' chapter.id %}" method="post" style="display: inline;">
+                                {% csrf_token %}
+                                <button type="submit" class="btn btn-danger">Confirm</button>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+
+
+
+                      <!-- Edit Modal -->
+                      <div class="modal fade" id="editModal{{ chapter.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog">
+                          <div class="modal-content">
+                            <div class="modal-header">
+                              <h5 class="modal-title" id="editModalLabel">Edit Chapter</h5>
+                              <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                            </div>
+                            <div class="modal-body">
+                              <form action="{% url 'update_chapter' chapter.id %}" method="post">
+                                {% csrf_token %}
+                                <div class="mb-3">
+                                  <label for="chapterTitle" class="form-label">Title</label>
+                                  <input type="text" class="form-control" id="chapterTitle" name="title" value="{{ chapter.title }}" required>
+                                </div>
+                                <div class="mb-3">
+                                  <label for="chapterOrder" class="form-label">Order</label>
+                                  <input type="number" class="form-control" id="chapterOrder" name="order" value="{{ chapter.order }}" required>
+                                </div>
+                                <div class="modal-footer">
+                                  <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                  <button type="submit" class="btn btn-primary">Save Changes</button>
+                                </div>
+                              </form>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
                     </div>
                   </div>
                 </div>
