@@ -6,6 +6,7 @@ class Page(models.Model):
     content = models.TextField()
     multimedia = models.FileField(upload_to='uploads/', null=True, blank=True)  # For images/videos
     chapter = models.ForeignKey(Chapter, on_delete=models.CASCADE, related_name='pages')  # Relate to Chapter
-
+    order = models.IntegerField(default=0)
+    
     def __str__(self):
         return self.title

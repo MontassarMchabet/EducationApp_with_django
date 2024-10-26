@@ -354,7 +354,7 @@
                       </div> {% endcomment %}
                       <div class="event_time">10:30 AM - 12:30PM</div>
                       <h3 class="event__card--title">
-                        <a href="{% url 'page_detail' chapter_id=chapter.id page_id=1 %}">{{ chapter.title }}</a>
+                        <a href="{% url 'page_list' chapter_id=chapter.id %}">{{ chapter.title }}</a>
                       </h3>
 
 
@@ -380,7 +380,7 @@
                         </svg>
                         Tunis, Tunisia
                       </div>
-                      <a class="event__card--link" href="{% url 'page_detail' chapter_id=chapter.id page_id=1 %}">
+                      <a class="event__card--link" href="{% url 'page_list' chapter_id=chapter.id %}">
                         Study Now
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
