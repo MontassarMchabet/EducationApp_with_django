@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Rapports</title>
+</head>
+<body>
+    <h1>Liste des Rapports</h1>
+    <ul>
+        {% for rapport in rapports %}
+            <li>{{ rapport.course.title }} - {{ rapport.date_creation }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'rapport-create' %}">Ajouter un nouveau rapport</a>
+</body>
+</html>

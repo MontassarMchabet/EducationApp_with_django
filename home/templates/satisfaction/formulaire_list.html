@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Formulaires</title>
+</head>
+<body>
+    <h1>Liste des Formulaires</h1>
+    <ul>
+        {% for formulaire in formulaires %}
+            <li>{{ formulaire.chapitre.title }} - {{ formulaire.date_remplissage }} - Note : {{ formulaire.note }}</li>
+        {% endfor %}
+    </ul>
+    <a href="{% url 'formulaire-create' %}">Ajouter un nouveau formulaire</a>
+</body>
+</html>
