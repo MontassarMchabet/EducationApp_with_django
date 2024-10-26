@@ -97,7 +97,7 @@ def login_view(request):
                     return redirect('InstructorsHome')  # Redirection vers le tableau de bord instructeur
                 else:
                     messages.success(request, 'Bienvenue, étudiant !')
-                    return redirect('StudentHome')  # Redirection vers le tableau de bord de l'étudiant
+                    return redirect('course_list')  # Redirection vers le tableau de bord de l'étudiant
             else:
                 # Afficher un message si l'authentification échoue
                 messages.error(request, 'Nom d\'utilisateur ou mot de passe incorrect')
@@ -108,7 +108,7 @@ def login_view(request):
 
 @login_required
 def home(request):
-    return render(request, 'coureses-grid.html')
+    return render(request, 'course_list.html')
 @login_required
 def InstructorsHome(request):
     return render(request, 'instructors.html')
