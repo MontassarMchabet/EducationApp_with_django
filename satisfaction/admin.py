@@ -4,14 +4,19 @@ from django.urls import path
 from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
+from transformers import pipeline  # Import Hugging Face library
+
 from .models import Formulaire, Rapport, Course
+
+# Initialize the Hugging Face summarization pipeline
+summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
+suggestion_generator = pipeline("text-generation", model="gpt2")  # You can choose a different model if needed
 
 @admin.register(Formulaire)
 class FormulaireAdmin(admin.ModelAdmin):
     list_display = ('chapitre', 'date_remplissage', 'type_formulaire', 'note')
     search_fields = ('chapitre__title',)
     list_filter = ('type_formulaire',)
-
 
 @admin.register(Rapport)
 class RapportAdmin(admin.ModelAdmin):
@@ -32,13 +37,14 @@ class RapportAdmin(admin.ModelAdmin):
                 self.message_user(request, "Veuillez sélectionner un cours pour générer le rapport.", level="error")
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
+            # Retrieve the course with error handling
             course = get_object_or_404(Course, id=course_id)
             report_text = self.create_report_text(course)
-            conclusion_text = self.generate_conclusion_text(course)  # Utilisation de l'IA pour générer la conclusion
 
+            # Save the report
             Rapport.objects.create(
                 course=course,
-                contenu_rapport=report_text + "\n\nConclusion:\n" + conclusion_text,
+                contenu_rapport=report_text,
                 date_creation=timezone.now()
             )
 
@@ -49,9 +55,13 @@ class RapportAdmin(admin.ModelAdmin):
         return TemplateResponse(request, 'admin/generate_report.html', context)
 
     def create_report_text(self, course):
+        """Generate satisfaction report text for each chapter of the course."""
         report_content = f"Rapport de satisfaction pour le cours '{course.title}'\n\n"
         report_content += "Détails par chapitre:\n"
         
+        positive_comments = []  # To store positive comments for conclusion
+        negative_comments = []  # To store negative comments for conclusion
+
         for chapter in course.chapters.all():
             formulaires = Formulaire.objects.filter(chapitre=chapter)
             if formulaires.exists():
@@ -59,13 +69,22 @@ class RapportAdmin(admin.ModelAdmin):
                 total_responses = formulaires.count()
                 comments = "\n".join(f" - {f.contenu}" for f in formulaires)
 
-                report_content += (
+                chapitre_text = (
                     f"Chapitre: {chapter.title}\n"
                     f"Note moyenne: {average_rating:.2f}\n"
                     f"Total des réponses: {total_responses}\n"
                     f"Commentaires:\n{comments}\n\n"
                 )
 
+                report_content += chapitre_text
+
+                # Classify comments based on ratings
+                for f in formulaires:
+                    if f.note < 3:
+                        negative_comments.append(f.contenu)  # Collect negative comments
+                    else:
+                        positive_comments.append(f.contenu)  # Collect positive comments
+                
                 if average_rating < 3:
                     report_content += (
                         f"Attention : Ce chapitre présente une note faible de {average_rating:.2f}\n"
@@ -73,40 +92,37 @@ class RapportAdmin(admin.ModelAdmin):
             else:
                 report_content += f"Chapitre: {chapter.title} - Aucun formulaire de satisfaction reçu.\n\n"
 
+        # Generate conclusions based on negative and positive comments
+        if negative_comments:
+            summary_text_neg = " ".join(negative_comments)
+            conclusion_neg = summarizer(summary_text_neg, max_length=150, min_length=50, do_sample=False)
+            report_content += f"\nConclusion sur les commentaires négatifs :\n{conclusion_neg[0]['summary_text']}"
+
+        if positive_comments:
+            summary_text_pos = " ".join(positive_comments)
+            conclusion_pos = summarizer(summary_text_pos, max_length=150, min_length=50, do_sample=False)
+            report_content += f"\nConclusion sur les commentaires positifs :\n{conclusion_pos[0]['summary_text']}"
+
+        # Suggestions for improving course quality based on feedback
+        suggestions = self.generate_improvement_suggestions(formulaires)
+        report_content += f"\nSuggestions pour améliorer la qualité des cours :\n{suggestions}"
+
         return report_content
 
-    def generate_conclusion_text(self, course):
-        """
-        Génère une conclusion synthétique du rapport de satisfaction.
-        Utilisez une IA pour identifier les points forts et faibles du cours.
-        """
-        low_rating_chapters = []
-        high_rating_chapters = []
+    def generate_improvement_suggestions(self, formulaires):
+        """Generate suggestions based on comments from the forms."""
+        comments = []
 
-        for chapter in course.chapters.all():
-            formulaires = Formulaire.objects.filter(chapitre=chapter)
-            if formulaires.exists():
-                average_rating = sum(f.note for f in formulaires) / formulaires.count()
-                if average_rating < 3:
-                    low_rating_chapters.append(chapter.title)
-                elif average_rating >= 4:
-                    high_rating_chapters.append(chapter.title)
+        for formulaire in formulaires:
+            if formulaire.note < 5:  # Low rating
+                comments.append(formulaire.contenu)
 
-        conclusion = "Après analyse des retours, voici les principales observations :\n\n"
 
-        if high_rating_chapters:
-            conclusion += (
-                "Points forts : Les chapitres suivants ont reçu des retours très positifs : "
-                + ", ".join(high_rating_chapters) + ".\n"
-            )
-        
-        if low_rating_chapters:
-            conclusion += (
-                "Points à améliorer : Les chapitres suivants ont été notés de manière moins favorable : "
-                + ", ".join(low_rating_chapters) + ".\n"
-            )
-        
-        if not high_rating_chapters and not low_rating_chapters:
-            conclusion += "Les notes sont globalement moyennes, sans chapitre particulièrement élevé ou faible."
 
-        return conclusion
+        # Prepare input for the AI model
+        input_text = "Voici les commentaires des utilisateurs :\n" + "\n".join(comments) + "\n\nQuelles améliorations pourraient être apportées ?"
+
+        # Generate suggestions using AI
+        suggestions = suggestion_generator(input_text, max_length=150, num_return_sequences=1)
+
+        return suggestions[0]['generated_text'].strip()  # Return the generated suggestion
