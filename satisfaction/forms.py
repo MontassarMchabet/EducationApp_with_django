@@ -4,11 +4,13 @@ from .models import Formulaire, Rapport
 class FormulaireForm(forms.ModelForm):
     class Meta:
         model = Formulaire
-        fields = ['chapitre', 'contenu', 'type_formulaire', 'note', 'utilisateur']  # Champs à inclure dans le formulaire
+        fields = ['chapitre', 'contenu', 'type_formulaire', 'note', 'utilisateur']  # Fields to include in the form
         widgets = {
-            'contenu': forms.Textarea(attrs={'placeholder': 'Votre retour ici...'}),
-            'type_formulaire': forms.Select(attrs={'class': 'form-select'}),
-            'note': forms.Select(attrs={'class': 'form-select'}),
+            'chapitre': forms.Select(attrs={'class': 'form-control', 'placeholder': 'Chapitre associé'}),  # Changed to Select
+            'contenu': forms.Textarea(attrs={'class': 'form-control', 'placeholder': 'Votre retour ici...'}),
+            'type_formulaire': forms.Select(attrs={'class': 'form-control'}),
+            'note': forms.Select(attrs={'class': 'form-control'}),
+            'utilisateur': forms.Select(attrs={'class': 'form-control'}),
         }
         labels = {
             'chapitre': 'Chapitre associé',
