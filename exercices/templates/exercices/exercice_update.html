@@ -1,0 +1,10 @@
+<!-- exercices/templates/exercices/exercice_update.html -->
+<h1>Modifier l'Exercice</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Mettre à jour</button>
+</form>
+
+<a href="{% url 'exercice_list' %}">Retour à la liste des exercices</a>

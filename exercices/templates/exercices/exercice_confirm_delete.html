@@ -1,0 +1,10 @@
+<!-- exercices/templates/exercices/exercice_confirm_delete.html -->
+<h1>Supprimer l'Exercice</h1>
+
+<p>Êtes-vous sûr de vouloir supprimer cet exercice ? Cette action est irréversible.</p>
+
+<form method="post">
+    {% csrf_token %}
+    <button type="submit">Supprimer</button>
+    <a href="{% url 'exercice_list' %}">Annuler</a>
+</form>

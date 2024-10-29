@@ -1,0 +1,32 @@
+<h1>Liste des Exercices</h1>
+
+<a href="{% url 'exercice_create' %}">Créer un nouvel exercice</a>
+
+<table class="table table-striped" aria-label="Liste des exercices">
+    <thead>
+        <tr>
+            <th>ID</th>
+            <th>Paragraphe</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% if exercices %}
+            {% for exercice in exercices %}
+            <tr>
+                <td>{{ exercice.id }}</td>
+                <td>{{ exercice.paragraphe|truncatewords:10 }}</td>
+                <td>
+                    <a href="{% url 'exercice_detail' exercice.id %}">Détails</a>
+                    <a href="{% url 'exercice_update' exercice.id %}">Modifier</a>
+                    <a href="{% url 'exercice_confirm_delete' exercice.id %}">Supprimer</a>
+                </td>
+            </tr>
+            {% endfor %}
+        {% else %}
+            <tr>
+                <td colspan="3">Aucun exercice disponible.</td>
+            </tr>
+        {% endif %}
+    </tbody>
+</table>

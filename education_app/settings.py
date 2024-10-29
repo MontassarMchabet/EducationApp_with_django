@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'authentification',
+    # Votre nouvelle application
+    'exercices',
+
    
 ]
 

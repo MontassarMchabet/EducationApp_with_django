@@ -1,0 +1,10 @@
+<!-- exercices/templates/exercices/exercice_create.html -->
+<h1>Créer un Exercice</h1>
+
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Créer</button>
+</form>
+
+<a href="{% url 'exercice_list' %}">Retour à la liste des exercices</a>

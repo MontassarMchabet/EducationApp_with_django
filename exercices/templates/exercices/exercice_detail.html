@@ -1,0 +1,12 @@
+<!-- exercices/templates/exercices/exercice_detail.html -->
+<h1>Détails de l'Exercice</h1>
+
+<p><strong>ID :</strong> {{ exercice.id }}</p>
+<p><strong>Paragraphe :</strong> {{ exercice.paragraphe }}</p>
+<p><strong>Réponse 1 :</strong> {{ exercice.reponse1 }}</p>
+<p><strong>Réponse 2 :</strong> {{ exercice.reponse2 }}</p>
+<p><strong>Réponse 3 :</strong> {{ exercice.reponse3 }}</p>
+
+<a href="{% url 'exercice_update' exercice.id %}">Modifier</a>
+<a href="{% url 'exercice_confirm_delete' exercice.id %}">Supprimer</a>
+<a href="{% url 'exercice_list' %}">Retour à la liste</a>
