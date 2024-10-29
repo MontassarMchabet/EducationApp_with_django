@@ -7,6 +7,7 @@ from .models import Exercice, ReponseExercice
 class ExerciceListView(ListView):
     model = Exercice
     template_name = 'exercices/exercice_list.html'
+    context_object_name = 'exercices'
 
 # Détail d'un exercice
 class ExerciceDetailView(DetailView):
