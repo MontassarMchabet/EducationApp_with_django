@@ -9,7 +9,6 @@ class Course(models.Model):
 
     title = models.CharField(max_length=100)
     description = models.TextField()
-    description_summary = models.TextField(blank=True, null=True)
     price = models.DecimalField(max_digits=10, decimal_places=2)
     course_level = models.CharField(max_length=12, choices=COURSE_LEVEL_CHOICES)
     number_of_chapters = models.IntegerField()
