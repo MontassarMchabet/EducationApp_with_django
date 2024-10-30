@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Votre Site{% endblock %}</title>
+</head>
+<body>
+    <!-- Contenu principal de la page -->
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Intégration du widget de chatbot -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Manar"
+      agent-id="513a43ca-8e18-40ff-a5de-5957a9c12c01"
+      language-code="en"
+    ></df-messenger></body>
+</html>
