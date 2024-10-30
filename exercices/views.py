@@ -4,6 +4,10 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Exercice, ReponseExercice
 from .utils import valider_reponse  # Importer la fonction de validation
+import nltk
+nltk.download('wordnet')  # Téléchargez uniquement une fois, puis commentez cette ligne
+nltk.download('omw-1.4')  # Téléchargez si besoin d'autres langues
+
 
 # Liste des exercices
 class ExerciceListView(ListView):
