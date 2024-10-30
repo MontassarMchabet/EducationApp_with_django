@@ -3,6 +3,7 @@ from django.urls import reverse_lazy
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView, View
 from .models import Exercice, ReponseExercice
+from .utils import valider_reponse  # Importer la fonction de validation
 
 # Liste des exercices
 class ExerciceListView(ListView):
@@ -93,11 +94,11 @@ class SoumettreReponseView(View):
         reponse2 = request.POST.get('reponse2')
         reponse3 = request.POST.get('reponse3')
 
-        # Calcul de la note
+        # Calcul de la note en utilisant valider_reponse pour comparer chaque réponse
         note = sum([
-            reponse1 == exercice.reponse1,
-            reponse2 == exercice.reponse2,
-            reponse3 == exercice.reponse3
+            valider_reponse(reponse1, exercice.reponse1),
+            valider_reponse(reponse2, exercice.reponse2),
+            valider_reponse(reponse3, exercice.reponse3)
         ]) / 3 * 100
 
         # Enregistrement de la réponse
@@ -110,7 +111,7 @@ class SoumettreReponseView(View):
         )
 
         # Redirection vers la vue d'affichage de la note
-        return redirect('afficher_note', pk=exercice.id)  # Utilisez l'ID de l'exercice pour rediriger
+        return redirect('afficher_note', pk=exercice.id)
     
 
 # exercices/views.py
