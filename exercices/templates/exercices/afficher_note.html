@@ -1,0 +1,23 @@
+<!-- templates/exercices/afficher_note.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Note de l'Exercice</title>
+</head>
+<body>
+    <h1>Votre Note pour l'Exercice</h1>
+    <p>Note : {{ reponse.note }}%</p>
+    
+    <h2>Vos Réponses</h2>
+    <ul>
+        <li>Réponse 1 : {{ reponse.reponse_etudiant1 }}</li>
+        <li>Réponse 2 : {{ reponse.reponse_etudiant2 }}</li>
+        <li>Réponse 3 : {{ reponse.reponse_etudiant3 }}</li>
+    </ul>
+
+    <a href="{% url 'exercice_detail_user' reponse.exercice.id %}">Repassez cet exercice</a>
+    <br>
+    <a href="{% url 'exercice_list_user' %}">Retour à la liste des exercices</a>
+</body>
+</html>

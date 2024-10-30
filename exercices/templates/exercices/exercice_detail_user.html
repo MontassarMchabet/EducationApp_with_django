@@ -1,0 +1,28 @@
+<!-- templates/exercices/exercice_detail.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Exercice {{ exercice.id }}</title>
+</head>
+<body>
+    <h1>Exercice {{ exercice.id }}</h1>
+
+    <p>{{ exercice.paragraphe }}</p>
+
+    <form action="{% url 'soumettre_reponse' exercice.id %}" method="post">
+        {% csrf_token %}
+        
+        <label for="reponse1">Réponse 1 :</label>
+        <input type="text" id="reponse1" name="reponse1" required><br>
+
+        <label for="reponse2">Réponse 2 :</label>
+        <input type="text" id="reponse2" name="reponse2" required><br>
+
+        <label for="reponse3">Réponse 3 :</label>
+        <input type="text" id="reponse3" name="reponse3" required><br>
+
+        <button type="submit">Soumettre les réponses</button>
+    </form>
+</body>
+</html>

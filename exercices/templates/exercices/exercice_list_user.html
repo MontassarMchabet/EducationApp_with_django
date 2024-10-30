@@ -1,0 +1,34 @@
+<!-- templates/exercices/exercice_list.html -->
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Liste des Exercices</title>
+</head>
+<body>
+    <h1>Liste des Exercices</h1>
+
+    <table >
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Paragraphe</th>
+                <th>Date de Création</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for exercice in exercices %}
+                <tr>
+                    <td>{{ exercice.id }}</td>
+                    <td>{{ exercice.paragraphe|truncatewords:10 }}</td>
+                    <td>{{ exercice.date_creation }}</td>
+                    <td>
+                        <a href="{% url 'exercice_detail_user' exercice.id %}">Passer cet exercice</a>
+                    </td>
+                </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</body>
+</html>
