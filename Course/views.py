@@ -3,6 +3,8 @@ from .models import Course
 from .forms import CourseForm
 from django.contrib import messages
 
+
+
 def course_list(request):
     courses = Course.objects.all()
     return render(request, 'course/course_list.html', {'courses': courses})
