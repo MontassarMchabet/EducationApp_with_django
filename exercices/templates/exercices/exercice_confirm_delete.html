@@ -1,10 +1,72 @@
-<!-- exercices/templates/exercices/exercice_confirm_delete.html -->
-<h1>Supprimer l'Exercice</h1>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Supprimer l'Exercice</title>
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond légère */
+            font-family: Arial, sans-serif; /* Police de caractères */
+        }
+        h1 {
+            text-align: center; /* Centre le titre */
+            margin: 20px 0; /* Espace autour du titre */
+            color: #343a40; /* Couleur du titre */
+        }
+        .confirm-container {
+            max-width: 500px; /* Largeur maximale de la zone de confirmation */
+            margin: 0 auto; /* Centre la zone de confirmation */
+            background-color: #ffffff; /* Couleur de fond de la zone de confirmation */
+            padding: 20px; /* Padding pour la zone de confirmation */
+            border-radius: 5px; /* Coins arrondis */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre autour de la zone de confirmation */
+            text-align: center; /* Centre le texte */
+        }
+        .btn-delete {
+            display: inline-block; /* Affichage en ligne pour le bouton */
+            background-color: #dc3545; /* Couleur rouge */
+            color: white; /* Couleur du texte du bouton */
+            padding: 10px 20px; /* Padding pour le bouton */
+            border-radius: 5px; /* Coins arrondis */
+            border: none; /* Pas de bordure */
+            margin-top: 20px; /* Espace au-dessus du bouton */
+        }
+        .btn-delete:hover {
+            background-color: #c82333; /* Couleur du bouton au survol */
+        }
+        .back-link {
+            display: inline-block; /* Affichage en ligne pour le lien */
+            margin-top: 20px; /* Espace au-dessus du lien */
+            text-decoration: none; /* Pas de soulignement */
+            color: #007bff; /* Couleur du lien */
+        }
+        .back-link:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+    </style>
+</head>
+<body>
 
-<p>Êtes-vous sûr de vouloir supprimer cet exercice ? Cette action est irréversible.</p>
+    <h1>Supprimer l'Exercice</h1>
 
-<form method="post">
-    {% csrf_token %}
-    <button type="submit">Supprimer</button>
-    <a href="{% url 'exercice_list' %}">Annuler</a>
-</form>
+    <div class="confirm-container">
+        <p>Êtes-vous sûr de vouloir supprimer cet exercice ? Cette action est irréversible.</p>
+
+        <form method="post">
+            {% csrf_token %}
+            <button type="submit" class="btn-delete">Supprimer</button>
+            <a href="{% url 'exercice_list' %}" class="back-link">Annuler</a>
+        </form>
+    </div>
+
+    <!-- Lien vers Bootstrap JS (optionnel) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
