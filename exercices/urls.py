@@ -11,5 +11,6 @@ urlpatterns = [
     path('create/', views.ExerciceCreateView.as_view(), name='exercice_create'),
     path('<int:pk>/update/', views.ExerciceUpdateView.as_view(), name='exercice_update'),
     path('<int:pk>/delete/', views.ExerciceDeleteView.as_view(), name='exercice_confirm_delete'),
+    path('user/<int:pk>/note/', views.AfficherNoteView.as_view(), name='afficher_note'),  # Afficher note
     
 ]

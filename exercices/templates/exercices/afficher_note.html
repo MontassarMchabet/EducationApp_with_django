@@ -9,12 +9,7 @@
     <h1>Votre Note pour l'Exercice</h1>
     <p>Note : {{ reponse.note }}%</p>
     
-    <h2>Vos Réponses</h2>
-    <ul>
-        <li>Réponse 1 : {{ reponse.reponse_etudiant1 }}</li>
-        <li>Réponse 2 : {{ reponse.reponse_etudiant2 }}</li>
-        <li>Réponse 3 : {{ reponse.reponse_etudiant3 }}</li>
-    </ul>
+    
 
     <a href="{% url 'exercice_detail_user' reponse.exercice.id %}">Repassez cet exercice</a>
     <br>

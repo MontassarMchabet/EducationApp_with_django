@@ -86,7 +86,6 @@ class DetailExerciceUserView(View):
         exercice = get_object_or_404(Exercice, pk=pk)
         return render(request, self.template_name, {'exercice': exercice})
 
-# Soumettre une réponse pour l'exercice
 class SoumettreReponseView(View):
     def post(self, request, pk):
         exercice = get_object_or_404(Exercice, pk=pk)
@@ -102,7 +101,7 @@ class SoumettreReponseView(View):
         ]) / 3 * 100
 
         # Enregistrement de la réponse
-        ReponseExercice.objects.create(
+        reponse = ReponseExercice.objects.create(
             exercice=exercice,
             reponse_etudiant1=reponse1,
             reponse_etudiant2=reponse2,
@@ -110,5 +109,21 @@ class SoumettreReponseView(View):
             note=note
         )
 
-        # Redirection vers la liste des exercices après soumission
-        return redirect('exercice_list_user')
+        # Redirection vers la vue d'affichage de la note
+        return redirect('afficher_note', pk=exercice.id)  # Utilisez l'ID de l'exercice pour rediriger
+    
+
+# exercices/views.py
+
+class AfficherNoteView(View):
+    template_name = 'exercices/afficher_note.html'  # Chemin vers le template d'affichage de la note
+    
+    def get(self, request, pk):
+        # Obtenez la dernière réponse soumise par l'étudiant pour l'exercice donné
+        reponse = ReponseExercice.objects.filter(exercice__id=pk).order_by('-id').first()
+        
+        # Vérifiez si une réponse a été trouvée
+        if reponse is None:
+            return redirect('exercice_list_user')  # Redirigez si aucune réponse n'existe
+        
+        return render(request, self.template_name, {'reponse': reponse})
