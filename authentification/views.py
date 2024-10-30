@@ -11,7 +11,7 @@ import base64
 import requests
 import logging
 from .forms import UserProfileForm
-from PIL import Image, ImageDraw, ImageFont
+
 # Initialiser le logger
 logger = logging.getLogger('app')
 FACE_API_URL = 'https://api-us.faceplusplus.com/facepp/v3/compare'
@@ -160,7 +160,7 @@ def update_profile(request):
     return render(request, 'profile/update_profile.html', {'form': form})
 @login_required
 def home(request):
-    return render(request, 'course_list.html')
+    return render(request, 'coureses-grid.html')
 @login_required
 def InstructorsHome(request):
     return render(request, 'instructors.html')
