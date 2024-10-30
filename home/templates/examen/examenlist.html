@@ -37,6 +37,79 @@
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/custom-spacing.css' %}" />
     <!--================= Responsive css =================-->
     <link rel="stylesheet" type="text/css" href="{% static 'assets/css/responsive.css' %}" />
+
+
+
+
+    <style>
+      /* Custom Styles */
+      .card {
+          border-radius: 10px;
+          overflow: hidden;
+          transition: transform 0.2s ease-in-out;
+      }
+      .card:hover {
+          transform: translateY(-5px);
+          box-shadow: 0px 5px 20px rgba(0, 0, 0, 0.15);
+      }
+      .card-title a {
+          color: #007bff;
+          text-decoration: none;
+          font-weight: bold;
+      }
+      .card-title a:hover {
+          color: #0056b3;
+          text-decoration: underline;
+      }
+      .modal-header, .modal-footer {
+          border: none;
+      }
+      .modal-title {
+          font-weight: bold;
+      }
+      .btn-primary {
+          background-color: #007bff;
+          border: none;
+          transition: background-color 0.2s ease-in-out;
+      }
+      .btn-primary:hover {
+          background-color: #0056b3;
+      }
+      .btn-danger {
+          background-color: #dc3545;
+          border: none;
+          transition: background-color 0.2s ease-in-out;
+      }
+      .btn-danger:hover {
+
+
+        background-color: #c82333;
+      }
+
+
+      .add-exam-btn {
+        background-color: #007bff;
+        border: none;
+        padding: 12px 20px;
+        font-size: 1.2rem;
+        color: #ffffff;
+        font-weight: 500;
+        border-radius: 8px;
+        box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .add-exam-btn:hover {
+        background-color: #0056b3;
+        transform: translateY(-2px);
+        box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.15);
+    }
+
+    .add-exam-btn:focus {
+        outline: none;
+        box-shadow: 0px 0px 0px 4px rgba(0, 123, 255, 0.5);
+    }
+  </style>
 </head>
 
 
@@ -229,6 +302,11 @@
 
     <!--================= Wrapper Start Here =================-->
     <div class="react-wrapper">
+
+
+
+
+
       <div class="react-wrapper-inner">
         <!--================= Breadcrumbs Section Start Here =================-->
 
@@ -240,37 +318,57 @@
             <div
               class="row align-items-center back-vertical-middle shorting__course3 mb-50"
             >
+
             <div class="col-md-6">
               <div class="all__icons">
                   <div class="result-count">
                       {% if user.is_authenticated %}
                           {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
-                          <div>
-                              <button
-                                  type="button"
-                                  class="btn btn-primary"
-                                  data-bs-toggle="modal"
-                                  data-bs-target="#addExamenModal"
-                              >
-                                  Add Exam
-                              </button>
-                          </div>
+                          <div class="container mb-3">
+                            <div class="d-flex justify-content-end">
+                                <button
+                                    type="button"
+                                    class="btn btn-lg btn-primary add-exam-btn"
+                                    data-bs-toggle="modal"
+                                    data-bs-target="#addExamenModal"
+                                >
+                                    <i class="bi bi-plus-circle"></i> Ajouter un examen
+                                </button>
+                            </div>
+                        </div>
                           {% endif %}
                       {% endif %}
                   </div>
               </div>
           </div>
 
+          <div class="container mb-3">
+            <div class="input-group">
+                <input
+                    type="text"
+                    id="searchExam"
+                    class="form-control"
+                    placeholder="Rechercher un examen..."
+                    onkeyup="searchExams()"
+                >
+                <button class="btn btn-outline-secondary" type="button" onclick="searchExams()">
+                    Search
+                </button>
+            </div>
+        </div>
+    </div>
+</div>
+
           <!-- Add Exam Modal -->
           <div class="modal fade" id="addExamenModal" tabindex="-1" aria-labelledby="addExamenModalLabel" aria-hidden="true">
-              <div class="modal-dialog">
+              <div class="modal-dialog modal-lg">
                   <div class="modal-content">
                       <div class="modal-header">
                           <h5 class="modal-title" id="addExamenModalLabel">Add Exam</h5>
                           <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                       </div>
                       <div class="modal-body">
-                          <form action="{% url 'create_examen' %}" method="post">  <!-- Adjust the URL as needed -->
+                          <form action="{% url 'create_examen' %}" method="post">
                               {% csrf_token %}
                               <div class="mb-3">
                                   <label for="title" class="form-label">Exam Title</label>
@@ -311,111 +409,109 @@
               </div>
           </div>
 
-
-
-          </div>
-
-          <div class="row">
-            {% for examen in examens %}
-            <div class="col-lg-3">
-                <div class="event__card">
-                    <div class="event__card--content">
-                        <div class="event__card--content-area">
-                            <div class="event_time">{{ examen.date|date:"H:i A" }}</div> <!-- Affiche l'heure d'examen -->
-                            <h3 class="event__card--title">
+          <div class="container my-5">
+            <div class="row">
+                {% for examen in examens %}
+                <div class="col-lg-3 mb-4">
+                    <div class="card shadow-sm border-light">
+                        <div class="card-body">
+                            <div class="event_time text-muted mb-2">{{ examen.date|date:"H:i A" }}</div>
+                            <h5 class="card-title">
                                 <a href="{% url 'examen_detail' examen.id %}">{{ examen.title }}</a>
-                            </h3>
-                            <br /><br />
-
+                            </h5>
                             <p><strong>Description:</strong> {{ examen.description }}</p>
                             <p><strong>Duration:</strong> {{ examen.duration }} minutes</p>
                             <p><strong>Number of Questions:</strong> {{ examen.number_of_questions }}</p>
 
                             {% if user.is_authenticated %}
                                 {% if user.role == "admin" or user.role == "responsable" or user.role == "instructeur" %}
-                                    <button class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal{{ examen.id }}">Delete</button>
-                                    <button class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#editModal{{ examen.id }}">Edit</button>
+                                    <button class="btn btn-danger btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#deleteModal{{ examen.id }}">
+                                        <i class="bi bi-trash"></i> Delete
+                                    </button>
+                                    <button class="btn btn-primary btn-sm mt-2" data-bs-toggle="modal" data-bs-target="#editModal{{ examen.id }}">
+                                        <i class="bi bi-pencil"></i> Edit
+                                    </button>
                                 {% endif %}
                             {% endif %}
+                        </div>
+                    </div>
 
-                            <!-- Delete Modal -->
-                            <div class="modal fade" id="deleteModal{{ examen.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="deleteModalLabel">Delete Exam</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    <!-- Delete Modal -->
+                    <div class="modal fade" id="deleteModal{{ examen.id }}" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-sm">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="deleteModalLabel">Delete Exam</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    Are you sure you want to delete the exam "{{ examen.title }}"?
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                                    <form action="{% url 'delete_examen' examen.id %}" method="post" style="display: inline;">
+                                        {% csrf_token %}
+                                        <button type="submit" class="btn btn-danger">Confirm</button>
+                                    </form>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Edit Modal -->
+                    <div class="modal fade" id="editModal{{ examen.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
+                        <div class="modal-dialog modal-lg">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h5 class="modal-title" id="editModalLabel">Edit Exam</h5>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+                                    <form action="{% url 'update_examen' examen.id %}" method="post">
+                                        {% csrf_token %}
+                                        <div class="mb-3">
+                                            <label for="title" class="form-label">Exam Title</label>
+                                            <input type="text" class="form-control" id="title" name="title" value="{{ examen.title }}" required>
                                         </div>
-                                        <div class="modal-body">
-                                            Are you sure you want to delete the exam "{{ examen.title }}"?
+                                        <div class="mb-3">
+                                            <label for="description" class="form-label">Description</label>
+                                            <textarea class="form-control" id="description" name="description" rows="3" required>{{ examen.description }}</textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="duration" class="form-label">Duration (in minutes)</label>
+                                            <input type="number" class="form-control" id="duration" name="duration" value="{{ examen.duration }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="number_of_questions" class="form-label">Number of Questions</label>
+                                            <input type="number" class="form-control" id="number_of_questions" name="number_of_questions" value="{{ examen.number_of_questions }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="passing_score" class="form-label">Passing Score</label>
+                                            <input type="number" step="0.01" class="form-control" id="passing_score" name="passing_score" value="{{ examen.passing_score }}" required>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="exam_type" class="form-label">Exam Type</label>
+                                            <select class="form-select" id="exam_type" name="exam_type" required>
+                                                <option value="" disabled>Select Exam Type</option>
+                                                <option value="theory" {% if examen.exam_type == "theory" %}selected{% endif %}>Theory</option>
+                                                <option value="practical" {% if examen.exam_type == "practical" %}selected{% endif %}>Practical</option>
+                                                <option value="oral" {% if examen.exam_type == "oral" %}selected{% endif %}>Oral</option>
+                                            </select>
                                         </div>
                                         <div class="modal-footer">
                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                            <form action="{% url 'delete_examen' examen.id %}" method="post" style="display: inline;">
-                                                {% csrf_token %}
-                                                <button type="submit" class="btn btn-danger">Confirm</button>
-                                            </form>
+                                            <button type="submit" class="btn btn-primary">Save Changes</button>
                                         </div>
-                                    </div>
+                                    </form>
                                 </div>
                             </div>
-
-                            <!-- Edit Modal -->
-                            <div class="modal fade" id="editModal{{ examen.id }}" tabindex="-1" aria-labelledby="editModalLabel" aria-hidden="true">
-                                <div class="modal-dialog">
-                                    <div class="modal-content">
-                                        <div class="modal-header">
-                                            <h5 class="modal-title" id="editModalLabel">Edit Exam</h5>
-                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                        </div>
-                                        <div class="modal-body">
-                                            <form action="{% url 'update_examen' examen.id %}" method="post">
-                                                {% csrf_token %}
-                                                <div class="mb-3">
-                                                    <label for="title" class="form-label">Exam Title</label>
-                                                    <input type="text" class="form-control" id="title" name="title" value="{{ examen.title }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="description" class="form-label">Description</label>
-                                                    <textarea class="form-control" id="description" name="description" rows="3" required>{{ examen.description }}</textarea>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="duration" class="form-label">Duration (in minutes)</label>
-                                                    <input type="number" class="form-control" id="duration" name="duration" value="{{ examen.duration }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="number_of_questions" class="form-label">Number of Questions</label>
-                                                    <input type="number" class="form-control" id="number_of_questions" name="number_of_questions" value="{{ examen.number_of_questions }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="passing_score" class="form-label">Passing Score</label>
-                                                    <input type="number" step="0.01" class="form-control" id="passing_score" name="passing_score" value="{{ examen.passing_score }}" required>
-                                                </div>
-                                                <div class="mb-3">
-                                                    <label for="exam_type" class="form-label">Exam Type</label>
-                                                    <select class="form-select" id="exam_type" name="exam_type" required>
-                                                        <option value="" disabled>Select Exam Type</option>
-                                                        <option value="theory" {% if examen.exam_type == "theory" %}selected{% endif %}>Theory</option>
-                                                        <option value="practical" {% if examen.exam_type == "practical" %}selected{% endif %}>Practical</option>
-                                                        <option value="oral" {% if examen.exam_type == "oral" %}selected{% endif %}>Oral</option>
-                                                    </select>
-                                                </div>
-                                                <div class="modal-footer">
-                                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                                    <button type="submit" class="btn btn-primary">Save Changes</button>
-                                                </div>
-                                            </form>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-
                         </div>
                     </div>
                 </div>
+                {% endfor %}
             </div>
-            {% endfor %}
         </div>
+
 
 
             <!--================= Pagination Section Start Here =================-->
@@ -447,16 +543,6 @@
       </div>
     </div>
 
-    <div class="col-md-6 text-right">
-      <select class="form-control">
-        <option>Chapter Type: All</option>
-        <option>Sort by popularity</option>
-        <option>Sort by average rating</option>
-        <option>Sort by latest</option>
-        <option>Sort by price: low to high</option>
-        <option>Sort by price: high to low</option>
-      </select>
-    </div>
     <!--================= Wrapper End Here =================-->
 
     <footer id="react-footer" class="react-footer react-footer-two">
@@ -630,6 +716,26 @@
     <script src="{% static 'assets/js/plugins.js' %}"></script>
     <!--================= Main js =================-->
     <script src="{% static 'assets/js/main.js' %}"></script>
+
+
+
+    <script>
+      function searchExams() {
+          const input = document.getElementById('searchExam').value.toLowerCase();
+          const exams = document.getElementsByClassName('exam-item');
+
+          Array.from(exams).forEach((exam) => {
+              const title = exam.getElementsByClassName('card-title')[0].textContent.toLowerCase();
+              const description = exam.getElementsByTagName('p')[0].textContent.toLowerCase();
+
+              if (title.includes(input) || description.includes(input)) {
+                  exam.style.display = ''; // Show the exam item
+              } else {
+                  exam.style.display = 'none'; // Hide the exam item
+              }
+          });
+      }
+      </script>
   </body>
   {% endblock %}
 

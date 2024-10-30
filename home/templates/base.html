@@ -4,6 +4,20 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>{% block title %}Votre Site{% endblock %}</title>
+    <style>
+        /* Style to position the chatbot at the bottom right */
+        df-messenger {
+            --df-messenger-bot-message: #e0e0e0;
+            --df-messenger-user-message: #007bff;
+            --df-messenger-font-color: #333;
+            --df-messenger-bot-message-color: #444;
+            --df-messenger-chat-background-color: #f7f7f7;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
 </head>
 <body>
     <!-- Contenu principal de la page -->
@@ -19,5 +33,6 @@
       chat-title="Manar"
       agent-id="513a43ca-8e18-40ff-a5de-5957a9c12c01"
       language-code="en"
-    ></df-messenger></body>
+    ></df-messenger>
+</body>
 </html>
