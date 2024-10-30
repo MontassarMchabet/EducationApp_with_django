@@ -65,28 +65,12 @@
                             <!--================= Menu Structure =================--> 
                             <div class="react-inner-menus">
                                 <ul id="backmenu" class="react-menus react-sub-shadow">
-                                    <li><a href="#">Home</a></li>
+                                    <li><a href="">Home</a></li>
                                     <li><a href="#">Pages</a>
-                                        <ul>
-                                            <li><a href="about.html">About</a></li>
-                                            <li><a href="instructors.html">Instructor</a></li>
-                                            <li><a href="profile.html">Profile</a></li>
-                                            <li><a href="events.html">Events</a>
-                                                <ul>
-                                                    <li><a href="events.html">Events</a></li>
-                                                    <li><a href="events-right-sidebar.html">Events Sidebar</a></li>
-                                                    <li><a href="events-single.html">Events Single</a></li>
-                                                </ul>
-                                            </li>
-                                        </ul>
+                                       
                                     </li>
                                     <li><a href="courses-grid.html">Courses</a>
-                                        <ul>
-                                            <li><a href="courses-grid.html">Courses</a></li>
-                                            <li><a href="courses-right-sidebar.html">Right Sidebar</a></li>
-                                            <li><a href="courses-list.html">Courses List</a></li>
-                                            <li><a href="courses-single.html">Courses Single</a></li>
-                                        </ul>
+                                       
                                     </li>
                                     <li><a href="blog.html">Blog</a>
                                         <ul>
@@ -98,7 +82,7 @@
                                 </ul>
                                 <!--================= User Profile and Logout (after login) =================-->
                                 <ul id="user-menu" class="react-menus react-sub-shadow">
-                                    <li><a href="profile.html">Profile</a></li>
+                                    <li><a href="{% url 'user_profile' %}">Profile</a></li>
                                     <li>
                                         <a href="{% url 'logout' %}" class="dropdown-item">
                                         <i class="fas fa-sign-out-alt mr-2"></i> Logout
