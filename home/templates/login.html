@@ -130,10 +130,13 @@
                                                 <polyline points="12 5 19 12 12 19"></polyline>
                                             </svg>
                                         </button>
-                                        <span class="back-or"> ........ or Login with Face ID ........ </span>
+                                        <span class="back-or"> ..... or Login with Face ID ..... </span>
                                         <ul class="social-links">
-                                            <li><a href="{% url 'login2' %}"><span aria-hidden="true" class="social_facebook"></span></a></li>
-                                            
+                                            <li>
+                                                <a href="{% url 'login2' %}">
+                                                    <span aria-hidden="true" class="fas fa-user-lock"></span>
+                                                </a>
+                                            </li>
                                         </ul>                                        
                                     </form>
                                 </div>
