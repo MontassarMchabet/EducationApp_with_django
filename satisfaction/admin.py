@@ -1,16 +1,20 @@
-from django.contrib import admin
+from django.contrib import admin 
 from django.http import HttpResponseRedirect
 from django.urls import path
 from django.template.response import TemplateResponse
 from django.utils import timezone
 from django.shortcuts import get_object_or_404
-from transformers import pipeline  # Import Hugging Face library
+from transformers import pipeline  # Import de la bibliothèque Hugging Face
+import os
+import google.generativeai as genai  # Import du client Google Generative AI
 
 from .models import Formulaire, Rapport, Course
 
-# Initialize the Hugging Face summarization pipeline
+# Initialiser le pipeline de résumés de Hugging Face
 summarizer = pipeline("summarization", model="facebook/bart-large-cnn")
-suggestion_generator = pipeline("text-generation", model="gpt2")  # You can choose a different model if needed
+
+# Initialiser le client Google Generative AI avec une clé API (à remplacer par la vôtre)
+genai.configure(api_key="AIzaSyCXmHskLc0MkTDGtK0q_G2mLPieiuAXiXs")
 
 @admin.register(Formulaire)
 class FormulaireAdmin(admin.ModelAdmin):
@@ -37,11 +41,11 @@ class RapportAdmin(admin.ModelAdmin):
                 self.message_user(request, "Veuillez sélectionner un cours pour générer le rapport.", level="error")
                 return HttpResponseRedirect(request.META.get('HTTP_REFERER'))
 
-            # Retrieve the course with error handling
+            # Récupérer le cours avec une gestion d'erreur
             course = get_object_or_404(Course, id=course_id)
             report_text = self.create_report_text(course)
 
-            # Save the report
+            # Enregistrer le rapport
             Rapport.objects.create(
                 course=course,
                 contenu_rapport=report_text,
@@ -55,12 +59,12 @@ class RapportAdmin(admin.ModelAdmin):
         return TemplateResponse(request, 'admin/generate_report.html', context)
 
     def create_report_text(self, course):
-        """Generate satisfaction report text for each chapter of the course."""
+        """Génère le texte du rapport de satisfaction pour chaque chapitre du cours."""
         report_content = f"Rapport de satisfaction pour le cours '{course.title}'\n\n"
         report_content += "Détails par chapitre:\n"
         
-        positive_comments = []  # To store positive comments for conclusion
-        negative_comments = []  # To store negative comments for conclusion
+        positive_comments = []  # Stocker les commentaires positifs pour la conclusion
+        negative_comments = []  # Stocker les commentaires négatifs pour la conclusion
 
         for chapter in course.chapters.all():
             formulaires = Formulaire.objects.filter(chapitre=chapter)
@@ -78,12 +82,12 @@ class RapportAdmin(admin.ModelAdmin):
 
                 report_content += chapitre_text
 
-                # Classify comments based on ratings
+                # Classer les commentaires en fonction des notes
                 for f in formulaires:
                     if f.note < 3:
-                        negative_comments.append(f.contenu)  # Collect negative comments
+                        negative_comments.append(f.contenu)  # Commentaires négatifs
                     else:
-                        positive_comments.append(f.contenu)  # Collect positive comments
+                        positive_comments.append(f.contenu)  # Commentaires positifs
                 
                 if average_rating < 3:
                     report_content += (
@@ -92,7 +96,7 @@ class RapportAdmin(admin.ModelAdmin):
             else:
                 report_content += f"Chapitre: {chapter.title} - Aucun formulaire de satisfaction reçu.\n\n"
 
-        # Generate conclusions based on negative and positive comments
+        # Générer des conclusions basées sur les commentaires négatifs et positifs
         if negative_comments:
             summary_text_neg = " ".join(negative_comments)
             conclusion_neg = summarizer(summary_text_neg, max_length=150, min_length=50, do_sample=False)
@@ -103,26 +107,56 @@ class RapportAdmin(admin.ModelAdmin):
             conclusion_pos = summarizer(summary_text_pos, max_length=150, min_length=50, do_sample=False)
             report_content += f"\nConclusion sur les commentaires positifs :\n{conclusion_pos[0]['summary_text']}"
 
-        # Suggestions for improving course quality based on feedback
-        suggestions = self.generate_improvement_suggestions(formulaires)
+        # Suggestions pour améliorer la qualité du cours
+        suggestions = self.generate_improvement_suggestions(negative_comments, formulaires)
         report_content += f"\nSuggestions pour améliorer la qualité des cours :\n{suggestions}"
 
         return report_content
 
-    def generate_improvement_suggestions(self, formulaires):
-        """Generate suggestions based on comments from the forms."""
-        comments = []
+    def generate_improvement_suggestions(self, negative_comments, formulaires):
+        """Génère des suggestions basées sur les commentaires négatifs des formulaires."""
+        if not negative_comments:
+            return "Aucune suggestion d'amélioration nécessaire."
 
-        for formulaire in formulaires:
-            if formulaire.note < 5:  # Low rating
-                comments.append(formulaire.contenu)
+        # Préparer le texte d'entrée pour Google Generative AI
+        input_text = "Voici les commentaires négatifs des utilisateurs :\n" + "\n".join(negative_comments) + "\n\nQuelles améliorations pourraient être apportées ?"
 
+        # Inclure des détails supplémentaires pour guider l'IA
+        additional_context = (
+            "Les utilisateurs se sont plaints de :\n"
+            "- Difficultés de compréhension\n"
+            "- Manque de matériel de soutien\n"
+            "- Structure des cours peu claire\n"
+            "- Feedback insuffisant sur les performances\n\n"
+            "Veuillez fournir des suggestions spécifiques pour chaque problème."
+        )
 
+        input_text += additional_context
 
-        # Prepare input for the AI model
-        input_text = "Voici les commentaires des utilisateurs :\n" + "\n".join(comments) + "\n\nQuelles améliorations pourraient être apportées ?"
+        # Utiliser Google Generative AI pour générer des suggestions d'amélioration
+        try:
+            # Configurer la génération
+            generation_config = {
+                "temperature": 0.7,
+                "top_p": 0.95,
+                "top_k": 64,
+                "max_output_tokens": 300,
+                "response_mime_type": "text/plain",
+            }
 
-        # Generate suggestions using AI
-        suggestions = suggestion_generator(input_text, max_length=150, num_return_sequences=1)
+            # Démarrer un modèle génératif
+            model = genai.GenerativeModel(
+                model_name="gemini-1.5-flash",  # Remplacez par votre modèle
+                generation_config=generation_config,
+                system_instruction="Vous êtes un assistant d'IA pour améliorer les retours d'expérience.",
+            )
 
-        return suggestions[0]['generated_text'].strip()  # Return the generated suggestion
+            # Démarrer une session de chat pour obtenir une réponse
+            chat_session = model.start_chat(
+                history=[{"role": "user", "parts": [input_text]}]
+            )
+            response = chat_session.send_message(input_text)
+
+            return response.text.strip()  # Retourne les suggestions générées
+        except Exception as e:
+            return f"Erreur lors de la génération des suggestions avec Google Generative AI : {str(e)}"

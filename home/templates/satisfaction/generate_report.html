@@ -1,13 +1,10 @@
-
-
-
 <!DOCTYPE html>
 <html lang="fr">
   <!-- Mirrored from reactheme.com/products/html/echooling/coureses-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 22 Sep 2024 13:06:54 GMT -->
   <head>
     <!--================= Meta tag =================-->
     <meta charset="utf-8" />
-    <title>Coureses | Liste des Formulaires</title>
+    <title>Coureses | Créer un Formulaire</title>
     <meta name="description" content="" />
     <!--================= Responsive Tag =================-->
     <meta http-equiv="x-ua-compatible" content="ie=edge" />
@@ -19,8 +16,6 @@
       type="image/x-icon"
       href="../../static/assets/images/fav.png"
     />
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
-
     <!--================= Bootstrap V5 css =================-->
     <link
       rel="stylesheet"
@@ -266,100 +261,41 @@
                                                     </select>
                                                 </div>
                                             </div>
-                                            <div class="row react-grid react-list">
-                                              {% for formulaire in formulaires %}
-                                              <div class="single-studies col-lg-12 grid-item">
-                                                  <div class="inner-course">
-                                                      <div class="case-img">
-                                                          <a href="#" class="cate-w">{{ formulaire.chapitre.title }}</a>
-                                                          <img src="../../static/assets/images/course-filter/1.jpg" alt="Course Image">
-                                                      </div>
-                                                      <div class="case-content">
-                                                          <h4 class="case-title">
-                                                              <a href="courses-single.html">{{ formulaire.chapitre.course }}</a>
-                                                          </h4>
-                                                          <div>
-                                                            <div>
-                                                              {{formulaire.contenu}}
+                                            <div class="report-generation-form">
+                                                <h1 class="contact-title">Générer un Rapport de Satisfaction</h1>
+                                                
+                                                <div id="report-form" class="blog-form">
+                                                    <div id="form-messages"></div>
+                                                    <form method="post" id="contact-form">                                                    
+                                            
+                                                        {% csrf_token %}
+                                                        <div class="row">
+                                                            <div class="col-lg-12">
+                                                                <div class="back-input">
+                                                                    <label for="course_id">{{ form.course_id.label }}</label>
+                                                                    <select name="course_id" id="course_id" required>
+                                                                        {% for course in courses %}
+                                                                            <option value="{{ course.id }}">{{ course.title }}</option>
+                                                                        {% endfor %}
+                                                                    </select>
+                                                                </div>
                                                             </div>
-
-                                                              <button type="button" class="btn btn-danger" data-toggle="modal" data-target="#deleteModal{{ formulaire.id }}">
-                                                                  Supprimer
-                                                              </button>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          
-                                              <!-- Edit Modal -->
-                                              <div class="modal fade" id="editModal{{ formulaire.id }}" tabindex="-1" role="dialog" aria-labelledby="editModalLabel{{ formulaire.id }}" aria-hidden="true">
-                                                  <div class="modal-dialog" role="document">
-                                                      <div class="modal-content">
-                                                          <div class="modal-header">
-                                                              <h5 class="modal-title" id="editModalLabel{{ formulaire.id }}">Modifier Formulaire</h5>
-                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                  <span aria-hidden="true">&times;</span>
-                                                              </button>
-                                                          </div>
-                                                          <form action="{% url 'formulaire-update' formulaire.id %}" method="post">
-                                                              {% csrf_token %}
-                                                              <div class="modal-body">
-                                                                  <input type="hidden" name="id" value="{{ formulaire.id }}"> <!-- Include the id -->
-                                                                  <div class="form-group">
-                                                                      <label for="contenu">Contenu</label>
-                                                                      <textarea name="contenu" class="form-control" required>{{ formulaire.contenu }}</textarea>
-                                                                  </div>
-                                                                  <div class="form-group">
-                                                                      <label for="note">Note</label>
-                                                                      <select name="note" class="form-control">
-                                                                          <option value="1" {% if formulaire.note == 1 %}selected{% endif %}>1</option>
-                                                                          <option value="2" {% if formulaire.note == 2 %}selected{% endif %}>2</option>
-                                                                          <option value="3" {% if formulaire.note == 3 %}selected{% endif %}>3</option>
-                                                                          <option value="4" {% if formulaire.note == 4 %}selected{% endif %}>4</option>
-                                                                          <option value="5" {% if formulaire.note == 5 %}selected{% endif %}>5</option>
-                                                                      </select>
-                                                                  </div>
-                                                                  <!-- Add other fields as necessary -->
-                                                              </div>
-                                                              <div class="modal-footer">
-                                                                  <button type="button" class="btn btn-secondary" data-dismiss="modal">Fermer</button>
-                                                                  <button type="submit" class="btn btn-primary">Sauvegarder</button>
-                                                              </div>
-                                                          </form>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                          
-                                              <!-- Delete Modal -->
-                                              <div class="modal fade" id="deleteModal{{ formulaire.id }}" tabindex="-1" role="dialog" aria-labelledby="deleteModalLabel{{ formulaire.id }}" aria-hidden="true">
-                                                  <div class="modal-dialog" role="document">
-                                                      <div class="modal-content">
-                                                          <div class="modal-header">
-                                                              <h5 class="modal-title" id="deleteModalLabel{{ formulaire.id }}">Confirmer la Suppression</h5>
-                                                              <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                                                                  <span aria-hidden="true">&times;</span>
-                                                              </button>
-                                                          </div>
-                                                          <div class="modal-body">
-                                                              Êtes-vous sûr de vouloir supprimer ce formulaire ?
-                                                          </div>
-                                                          <div class="modal-footer">
-                                                              <button type="button" class="btn btn-secondary" data-dismiss="modal">Annuler</button>
-                                                              <form action="{% url 'formulaire-delete' formulaire.id %}" method="post" style="display:inline;">
-                                                                  {% csrf_token %}
-                                                                  <button type="submit" class="btn btn-danger">Supprimer</button>
-                                                              </form>
-                                                          </div>
-                                                      </div>
-                                                  </div>
-                                              </div>
-                                              {% endfor %}
-                                          </div>
-                                          
-                                          
-                                          
-
-                                           
+                                            
+                                                            <div class="col-lg-12">                                                            
+                                                                <button type="submit" class="back-btn">Générer le Rapport
+                                                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-arrow-right">
+                                                                        <line x1="5" y1="12" x2="19" y2="12"></line>
+                                                                        <polyline points="12 5 19 12 12 19"></polyline>
+                                                                    </svg>
+                                                                </button>
+                                                            </div>
+                                                        </div>                                                    
+                                            
+                                                    </form>
+                                                </div>               
+                                            </div>
+                                            
+                                        
 
 
 
@@ -593,7 +529,7 @@
                       <path
                         d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"
                       ></path>
-                      <polyline points="22,6 12,13 2,6"></polyline></svg><a href="mailto:info@yourdmain.com">
+                      <polyline points="22,6 12,13 2,6"></polyline></svg ><a href="mailto:info@yourdmain.com">
                       info@echooling.com
                     </a>
                   </li>
@@ -710,13 +646,11 @@
     <script src="../../static/assets/js/plugins.js"></script>
     <!--================= Main js =================-->
     <script src="../../static/assets/js/main.js"></script>
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
   </body>
 
   <!-- Mirrored from reactheme.com/products/html/echooling/coureses-grid.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 22 Sep 2024 13:06:54 GMT -->
 </html>
+
 
 
 
