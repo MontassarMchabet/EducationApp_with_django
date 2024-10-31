@@ -3,6 +3,39 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+<<<<<<< HEAD
+    <title>{% block title %}Votre Site{% endblock %}</title>
+    <style>
+        /* Style to position the chatbot at the bottom right */
+        df-messenger {
+            --df-messenger-bot-message: #e0e0e0;
+            --df-messenger-user-message: #007bff;
+            --df-messenger-font-color: #333;
+            --df-messenger-bot-message-color: #444;
+            --df-messenger-chat-background-color: #f7f7f7;
+            position: fixed;
+            bottom: 20px;
+            right: 20px;
+            z-index: 1000;
+        }
+    </style>
+</head>
+<body>
+    <!-- Contenu principal de la page -->
+    <div>
+        {% block content %}
+        {% endblock %}
+    </div>
+
+    <!-- Intégration du widget de chatbot -->
+    <script src="https://www.gstatic.com/dialogflow-console/fast/messenger/bootstrap.js?v=1"></script>
+    <df-messenger
+      intent="WELCOME"
+      chat-title="Manar"
+      agent-id="513a43ca-8e18-40ff-a5de-5957a9c12c01"
+      language-code="en"
+    ></df-messenger>
+=======
     <title>{% block title %}Votre titre ici{% endblock %}</title>
     <link rel="apple-touch-icon" href="../static/assets/images/fav.png">
         <link rel="shortcut icon" type="image/x-icon" href="../static/assets/images/fav.png">        
@@ -181,5 +214,6 @@
         <script src="../static/assets/js/plugins.js"></script>       
 		<!--================= Main js =================-->
         <script src="../static/assets/js/main.js"></script>
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
 </body>
 </html>

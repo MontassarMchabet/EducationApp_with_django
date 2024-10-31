@@ -14,38 +14,38 @@ urlpatterns = [
     path('profile/', user_profile, name='user_profile'),
     path('profile/update/', update_profile, name='update_profile'),
      # Vue pour demander la réinitialisation du mot de passe
-    path('password-reset/', 
+    path('password-reset/',
          auth_views.PasswordResetView.as_view(
              template_name='password_reset.html',
              email_template_name='password_reset_email.html',
              subject_template_name='password_reset_subject.txt',
              success_url='/password-reset/done/'
-         ), 
+         ),
          name='password_reset'),
 
     # Vue pour confirmer que l'e-mail de réinitialisation a été envoyé
-    path('password-reset/done/', 
+    path('password-reset/done/',
          auth_views.PasswordResetDoneView.as_view(
              template_name='password_reset_done1.html'
-         ), 
+         ),
          name='password_reset_done'),
 
     # Vue pour vérifier le lien de réinitialisation
-    path('reset/<uidb64>/<token>/', 
+    path('reset/<uidb64>/<token>/',
          auth_views.PasswordResetConfirmView.as_view(
              template_name='password_reset_confirm.html',
              success_url='/reset/done/'
-         ), 
+         ),
          name='password_reset_confirm'),
 
     # Vue pour confirmer que le mot de passe a été réinitialisé
-    path('reset/done/', 
+    path('reset/done/',
          auth_views.PasswordResetCompleteView.as_view(
              template_name='password_reset_complete.html'
-         ), 
+         ),
          name='password_reset_complete'),
-    
-    
+
+
 ]
 if settings.DEBUG:
     urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
