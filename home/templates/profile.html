@@ -66,16 +66,26 @@
                             <li><a href="#">Pages</a>
                                
                             </li>
-                            <li><a href="courses-grid.html">Courses</a>
+                            <li><a href="{% url 'course_list' %}">Courses</a>
                                
                             </li>
-                            <li><a href="blog.html">Blog</a>
+                            <li><a href="#">Evalution</a>
                                 <ul>
-                                    <li><a href="blog.html">Blog</a></li>
-                                    <li><a href="blog-details.html">Blog Single</a></li>
+                                    <li><a href="#" id="create-exam">Create Exam</a></li>
+                                    <li><a href="#" id="question-exam">Question Examen</a></li>
+                                    <li><a href="#" id="create-exercice">Create Exercice</a></li>
+                                    <li><a href="#" id="try-exercice">Try Exercice</a></li>
                                 </ul>
                             </li>
-                            <li><a href="contact.html">Contact</a></li>
+                            
+
+                            <li><a href="#">Satisfaction </a>
+                                <ul>
+                                    <li><a href="#" id="rapport">Rapport</a></li>
+                                    <li><a href="#" id="Form">Form</a></li>
+                                    
+                                </ul>
+                            </li>
                         </ul>
                         <!--================= User Profile and Logout (after login) =================-->
                         <ul id="user-menu" class="react-menus react-sub-shadow">
@@ -88,18 +98,7 @@
                         
                              </li>
                         </ul>
-                        <!--================= Search Bar =================-->
-                        <div class="searchbar-part">                                                                      
-                            <form class="search-form">
-                                <input type="text" class="form-input" placeholder="Search Course">
-                                <button type="submit" class="form-button">
-                                    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="feather feather-search">
-                                        <circle cx="11" cy="11" r="8"></circle>
-                                        <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
-                                    </svg>
-                                </button>
-                            </form>
-                        </div>
+                       
                     </div>
                 </nav>
             </div>
@@ -119,6 +118,64 @@
             window.location.href = "{% url 'InstructorsHome' %}"; // URL vers la page InstructorsHome
         } else {
             window.location.href = "index.html"; // Page par défaut
+        }
+    });
+     // Redirection conditionnelle en fonction du rôle
+     document.getElementById('create-exam').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'instructeur') {
+            window.location.href = "{% url 'create_examen' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
+        }
+    });
+
+    document.getElementById('question-exam').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'instructeur') {
+            window.location.href = "{% url 'question_list' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
+        }
+    });
+
+    document.getElementById('rapport').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'instructeur') {
+            window.location.href = "{% url 'rapport-list' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
+        }
+    });
+
+
+
+
+    document.getElementById('create-exercice').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'instructeur') {
+            window.location.href = "{% url 'exercice_list' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
+        }
+    });
+
+    document.getElementById('try-exercice').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'etudiant') {
+            window.location.href = "{% url 'exercice_list_user' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
+        }
+    });
+
+
+    document.getElementById('Form').addEventListener('click', function(event) {
+        event.preventDefault();
+        if (userRole === 'etudiant') {
+            window.location.href = "{% url 'formulaire-list' %}";
+        } else {
+            alert("Accès réservé aux instructeurs.");
         }
     });
 </script>

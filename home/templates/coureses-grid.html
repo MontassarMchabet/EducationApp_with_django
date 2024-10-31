@@ -70,7 +70,13 @@
                                        
                                     </li>
                                     <li><a href="courses-grid.html">Courses</a>
-                                       
+                                        <ul>
+                                            <li><a href="courses-grid.html">Courses</a></li>
+                                            <li><a href="courses-right-sidebar.html">Right Sidebar</a></li>
+                                            <li><a href="courses-list.html">Courses List</a></li>
+                                            <li><a href="courses-single.html">Courses Single</a></li>
+                                        </ul>
+
                                     </li>
                                     <li><a href="blog.html">Blog</a>
                                         <ul>
@@ -82,7 +88,10 @@
                                 </ul>
                                 <!--================= User Profile and Logout (after login) =================-->
                                 <ul id="user-menu" class="react-menus react-sub-shadow">
+
+
                                     <li><a href="{% url 'user_profile' %}">Profile</a></li>
+
                                     <li>
                                         <a href="{% url 'logout' %}" class="dropdown-item">
                                         <i class="fas fa-sign-out-alt mr-2"></i> Logout

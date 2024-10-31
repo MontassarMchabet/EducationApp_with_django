@@ -12,7 +12,7 @@ class LoginForm(forms.Form):
 class UserProfileForm(forms.ModelForm):
     class Meta:
         model = User
-        fields = ['first_name', 'last_name', 'email','username', 'phone_number', 'age', 'bio', 'profile_image','role']   
+        fields = ['first_name', 'last_name', 'email','username', 'phone_number', 'age', 'bio', 'profile_image','role']
 class UpdateProfileForm(forms.ModelForm):
     class Meta:
         model = User
@@ -25,4 +25,4 @@ class UpdateProfileForm(forms.ModelForm):
             'age': forms.NumberInput(attrs={'class': 'form-control'}),
             'bio': forms.Textarea(attrs={'class': 'form-control'}),
             'profile_image': forms.FileInput(attrs={'class': 'form-control-file'}),
-        }        
+        }

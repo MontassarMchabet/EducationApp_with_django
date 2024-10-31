@@ -16,8 +16,10 @@ CORE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
 
+
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')  #
+
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.1/howto/deployment/checklist/
 
@@ -41,6 +43,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'home',
     'authentification',
+    'exercices',
+    'examen',
+    'questionexamen',  # Add the missing comma here
     'satisfaction',
     'Course',
     'Chapter',
@@ -165,7 +170,6 @@ AUTH_USER_MODEL = 'authentification.User'
 
 LOGIN_URL = 'login'
 LOGIN_REDIRECT_URL = 'home'  # Redirection après la connexion
-LOGOUT_REDIRECT_URL = 'home'
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'

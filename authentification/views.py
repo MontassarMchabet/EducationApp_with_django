@@ -22,10 +22,10 @@ api_secret = '5vQtsxII3O5KicWSmG8IMcbO0PLFqq5H'
 def compare_faces(image_data1, image_data2):
     """Compare deux images avec l'API Face++."""
     logger.debug("Début de la comparaison des visages avec l'API Face++")
-   
-    params = {'api_key': 'TcUNlfoFoLqkzPrC0zz8vGu1Qodk4VLB', 
-    'api_secret' : '5vQtsxII3O5KicWSmG8IMcbO0PLFqq5H', 
-    'image_base64_1' : image_data1, 
+
+    params = {'api_key': 'TcUNlfoFoLqkzPrC0zz8vGu1Qodk4VLB',
+    'api_secret' : '5vQtsxII3O5KicWSmG8IMcbO0PLFqq5H',
+    'image_base64_1' : image_data1,
     'image_base64_2' : image_data2
     }
     api_url = 'https://api-us.faceplusplus.com/facepp/v3/compare'
@@ -44,29 +44,28 @@ def login_view2(request):
     if request.method == 'POST':
         # Récupération de l'image de connexion en base64
         login_image_data = request.POST.get('login_image_data')
-        
+
         if not login_image_data:
             messages.error(request, "Image de connexion manquante.")
             return render(request, 'login2.html')
-        
+
         # Recherche de l'utilisateur par reconnaissance faciale
         for user in User.objects.all():
             logger.warning(f"{user.profile_image}")
             if user.profile_image:
                 profile_image_content = user.profile_image.read()
                 profile_image_data = base64.b64encode(profile_image_content).decode('utf-8')
-                
                 # Comparer les images avec l'API Face++
                 if compare_faces(login_image_data, profile_image_data):
                     logger.debug(f"Comparaison faciale réussie pour l'utilisateur : {user.username}")
                     login(request, user)
                     messages.success(request, f'Bienvenue, {user.role} !')
                     return redirect('StudentHome') if user.role == 'etudiant' else redirect('InstructorsHome')
-        
+
         # Si aucun utilisateur ne correspond
         logger.warning("Comparaison faciale échouée pour tous les utilisateurs")
         messages.error(request, 'La reconnaissance faciale a échoué ou l’utilisateur n’existe pas.')
-    
+
     return render(request, 'login2.html')
 
 
@@ -76,13 +75,12 @@ def register(request):
         form = CustomUserCreationForm(request.POST, request.FILES)
         if form.is_valid():
             user = form.save(commit=False)
-            
             # Gestion de l'image capturée en base64
             profile_image_data = request.POST.get('profile_image_data')
             if profile_image_data:
                 # Décoder l'image base64
-                format, imgstr = profile_image_data.split(';base64,') 
-                ext = format.split('/')[-1] 
+                format, imgstr = profile_image_data.split(';base64,')
+                ext = format.split('/')[-1]
                 # Créer le fichier d'image
                 user.profile_image.save(f'{user.username}_profile.{ext}', ContentFile(base64.b64decode(imgstr)), save=False)
 
@@ -103,14 +101,14 @@ def login_view(request):
             password = form.cleaned_data.get('password')
             print('password:', password)
             user = authenticate(request, username=username, password=password)
-            
+
             # Affichage pour debug dans la console
             print('Utilisateur authentifié :', user)
-            
+
             if user is not None:
                 login(request, user)
                 print('Utilisateur connecté :', user)
-                
+
                 # Vérification du rôle de l'utilisateur pour la redirection
                 if user.is_superuser:
                     messages.success(request, 'Bienvenue, super utilisateur !')
@@ -123,13 +121,13 @@ def login_view(request):
                     return redirect('InstructorsHome')  # Redirection vers le tableau de bord instructeur
                 else:
                     messages.success(request, 'Bienvenue, étudiant !')
-                    return redirect('course_list')  # Redirection vers le tableau de bord de l'étudiant
+                    return redirect('StudentHome')  # Redirection vers le tableau de bord de l'étudiant
             else:
                 # Afficher un message si l'authentification échoue
                 messages.error(request, 'Nom d\'utilisateur ou mot de passe incorrect')
     else:
         form = LoginForm()
-    
+
     return render(request, 'login.html', {'form': form})
 
 
@@ -156,7 +154,6 @@ def update_profile(request):
             return redirect('profile')  # Redirection vers la page du profil
     else:
         form = UpdateProfileForm(instance=request.user)
-    
     return render(request, 'profile/update_profile.html', {'form': form})
 @login_required
 def home(request):
