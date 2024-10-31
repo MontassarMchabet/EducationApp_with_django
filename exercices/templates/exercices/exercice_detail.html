@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Détails de l'Exercice</title>
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond légère */
+            font-family: Arial, sans-serif; /* Police de caractères */
+        }
+        h1 {
+            text-align: center; /* Centre le titre */
+            margin: 20px 0; /* Espace autour du titre */
+            color: #343a40; /* Couleur du titre */
+        }
+        .detail-container {
+            max-width: 600px; /* Largeur maximale de la zone de détails */
+            margin: 0 auto; /* Centre la zone de détails */
+            background-color: #ffffff; /* Couleur de fond de la zone de détails */
+            padding: 20px; /* Padding pour la zone de détails */
+            border-radius: 5px; /* Coins arrondis */
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Ombre autour de la zone de détails */
+        }
+        .detail-item {
+            margin-bottom: 15px; /* Espace entre les éléments de détail */
+        }
+        .button-container {
+            margin-top: 20px; /* Espace au-dessus des boutons */
+            text-align: center; /* Centre les boutons */
+        }
+        .btn {
+            margin: 5px; /* Espace autour des boutons */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Détails de l'Exercice</h1>
+
+    <div class="detail-container">
+        <div class="detail-item"><strong>ID :</strong> {{ exercice.id }}</div>
+        <div class="detail-item"><strong>Paragraphe :</strong> {{ exercice.paragraphe }}</div>
+        <div class="detail-item"><strong>Réponse 1 :</strong> {{ exercice.reponse1 }}</div>
+        <div class="detail-item"><strong>Réponse 2 :</strong> {{ exercice.reponse2 }}</div>
+        <div class="detail-item"><strong>Réponse 3 :</strong> {{ exercice.reponse3 }}</div>
+
+        <div class="button-container">
+            <a href="{% url 'exercice_update' exercice.id %}" class="btn btn-primary">Modifier</a>
+            <a href="{% url 'exercice_confirm_delete' exercice.id %}" class="btn btn-danger">Supprimer</a>
+            <a href="{% url 'exercice_list' %}" class="btn btn-secondary">Retour à la liste</a>
+        </div>
+    </div>
+
+    <!-- Lien vers Bootstrap JS (optionnel) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>

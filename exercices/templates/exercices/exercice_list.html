@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Liste des Exercices</title>
+    <!-- Lien vers Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Lien vers Font Awesome pour les icônes -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa; /* Couleur de fond légère */
+            font-family: Arial, sans-serif; /* Police de caractères */
+        }
+        h1 {
+            text-align: center; /* Centre le titre */
+            margin: 20px 0; /* Espace autour du titre */
+            color: #343a40; /* Couleur du titre */
+        }
+        .btn-create {
+            display: block; /* Affichage en bloc */
+            margin: 20px auto; /* Centre le bouton */
+            width: 200px; /* Largeur du bouton */
+            background-color: #007bff; /* Couleur bleue */
+            color: white; /* Couleur du texte du bouton */
+            text-align: center; /* Centre le texte */
+            padding: 10px; /* Padding pour le bouton */
+            border-radius: 5px; /* Coins arrondis */
+            text-decoration: none; /* Pas de soulignement */
+        }
+        .btn-create:hover {
+            background-color: #0056b3; /* Couleur du bouton au survol */
+        }
+        .table {
+            margin: 20px; /* Marge autour du tableau */
+        }
+        .table th {
+            background-color: #e9ecef; /* Couleur d'arrière-plan des en-têtes */
+            color: #343a40; /* Couleur du texte des en-têtes */
+        }
+        .table tbody tr {
+            background-color: #ffffff; /* Couleur de fond des lignes */
+        }
+        .table tbody tr:hover {
+            background-color: #f1f1f1; /* Couleur de fond au survol */
+        }
+        .table a {
+            margin-right: 10px; /* Espace entre les liens */
+            text-decoration: none; /* Pas de soulignement */
+        }
+        .table a:hover {
+            text-decoration: underline; /* Soulignement au survol */
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Liste des Exercices</h1>
+
+    <a href="{% url 'exercice_create' %}" class="btn-create">Créer un nouvel exercice</a>
+
+    <table class="table table-bordered" aria-label="Liste des exercices">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Paragraphe</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% if exercices %}
+                {% for exercice in exercices %}
+                <tr>
+                    <td>{{ exercice.id }}</td>
+                    <td>{{ exercice.paragraphe|truncatewords:10 }}</td>
+                    <td>
+                        <a href="{% url 'exercice_detail' exercice.id %}" class="btn btn-light">
+                            <i class="fas fa-eye"></i> Détails
+                        </a>
+                        <a href="{% url 'exercice_update' exercice.id %}" class="btn btn-light">
+                            <i class="fas fa-edit"></i> Modifier
+                        </a>
+                        <a href="{% url 'exercice_confirm_delete' exercice.id %}" class="btn btn-light">
+                            <i class="fas fa-trash-alt"></i> Supprimer
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            {% else %}
+                <tr>
+                    <td colspan="3" class="text-center">Aucun exercice disponible.</td>
+                </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+    <!-- Lien vers Bootstrap JS (optionnel) -->
+    <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
