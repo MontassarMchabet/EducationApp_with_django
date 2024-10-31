@@ -24,4 +24,13 @@ urlpatterns = [
          path('exams/', include('examen.urls')),  # Ajoutez cette ligne pour inclure l'application Examen
 
 
+
+    path('chapters/', include('Chapter.urls')),
+    path('pages/', include('Page.urls')),
+    path('courses/', include('Course.urls')),
+    path("", include("home.urls")),
+    path("", include("authentification.urls")),
+    path('satisfaction/', include('satisfaction.urls')),
+
+
 ]

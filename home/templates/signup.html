@@ -33,8 +33,58 @@
         <link rel="stylesheet" type="text/css" href="../static/assets/css/custom-spacing.css">
         <!--================= Responsive css =================-->
         <link rel="stylesheet" type="text/css" href="../static/assets/css/responsive.css">
+<<<<<<< HEAD
     </head>
     <body> 
+=======
+      
+    </head>
+    <body> 
+        <style>
+            /* Styles pour l'animation du message de succès */
+            @keyframes fadeIn {
+                from { opacity: 0; }
+                to { opacity: 1; }
+            }
+    
+            .fade-in {
+                animation: fadeIn 0.5s ease-in-out;
+            }
+    
+            /* Style de l'aperçu de l'image capturée */
+            #image-preview {
+                margin-top: 10px;
+                display: none;
+            }
+    
+            #preview-image {
+                border: 1px solid #ced4da;
+                border-radius: 4px;
+            }
+    
+            /* Style du message de confirmation */
+            #capture-message {
+                color: green;
+                display: none;
+                margin-top: 10px;
+            }
+    
+            /* Style du bouton de capture */
+            button {
+                margin-top: 10px;
+                padding: 10px 20px;
+                background-color: #007bff;
+                color: white;
+                border: none;
+                border-radius: 4px;
+                cursor: pointer;
+            }
+    
+            button:hover {
+                background-color: #0056b3;
+            }
+        </style>
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
         <!--================= Preloader Section Start Here =================-->        
         <div id="react__preloader">
             <div id="react__circle_loader"></div>
@@ -43,6 +93,7 @@
         <!--================= Preloader Section End Here =================-->
 
         <!--================= Header Section Start Here =================-->
+<<<<<<< HEAD
         <header id="react-header" class="react-header react-header-three">
             <div class="menu-part">
                 <div class="container">
@@ -81,10 +132,14 @@
                 </div>
             </div>
         </header>
+=======
+     
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
         <!--================= Header Section End Here =================-->
 
         <!--================= Wrapper Start Here =================-->
         <div class="react-wrapper">
+<<<<<<< HEAD
             <div class="react-wrapper-inner">  
                 <div class="react-login-page react-signup-page pt---120 pb---120">
                     <div class="container">
@@ -165,17 +220,152 @@
                                         <button type="submit" id="button" name="submit">Register</button>
                                     </form>
                                     
+=======
+            <div class="react-wrapper-inner">
+                <div class="react-login-page react-signup-page pt-120 pb-120">
+                    <div class="container">
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <div class="login-right-form" >
+                                    <form method="POST" action="{% url 'register' %}" enctype="multipart/form-data">
+                                        {% csrf_token %}
+                                        <div class="login-top" >
+                                            <h3>Sign Up</h3>
+                                            <p>Already have an account? <a href="{% url 'login' %}">Log in</a></p>
+                                        </div>
+                    
+                                        <!-- Informations personnelles -->
+                                        <div class="form-section" >
+                                            <div class="row">
+                                                <!-- Nom d'utilisateur et Email -->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="username">User Name</label>
+                                                        <input type="text" id="username" name="username" placeholder="User Name" class="form-control" required>
+                                                        {% if form.username.errors %}
+                                                            <div class="error text-danger">{{ form.username.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="email">Email</label>
+                                                        <input type="email" id="email" name="email" placeholder="Email" class="form-control" required>
+                                                        {% if form.email.errors %}
+                                                            <div class="error text-danger">{{ form.email.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                            <div class="row">
+                                                <!-- Numéro de téléphone et Âge -->
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="phone_number">Phone Number</label>
+                                                        <input type="text" id="phone_number" name="phone_number" placeholder="Phone Number" class="form-control" required>
+                                                        {% if form.phone_number.errors %}
+                                                            <div class="error text-danger">{{ form.phone_number.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="age">Age</label>
+                                                        <input type="number" id="age" name="age" placeholder="Age" class="form-control" required>
+                                                        {% if form.age.errors %}
+                                                            <div class="error text-danger">{{ form.age.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                    
+                                            <!-- Bio -->
+                                            <div class="form-group">
+                                                <label for="bio">Bio</label>
+                                                <textarea id="bio" name="bio" placeholder="Tell us about yourself" class="form-control" rows="4"></textarea>
+                                                {% if form.bio.errors %}
+                                                    <div class="error text-danger">{{ form.bio.errors.0 }}</div>
+                                                {% endif %}
+                                            </div>
+                                        </div>
+                                        <div class="form-section">
+                                            
+                                            <div class="row">
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password1">Password</label>
+                                                        <input type="password" id="password1" name="password1" placeholder="Password" class="form-control" required>
+                                                        {% if form.password1.errors %}
+                                                            <div class="error text-danger">{{ form.password1.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                                <div class="col-md-6">
+                                                    <div class="form-group">
+                                                        <label for="password2">Confirm Password</label>
+                                                        <input type="password" id="password2" name="password2" placeholder="Confirm Password" class="form-control" required>
+                                                        {% if form.password2.errors %}
+                                                            <div class="error text-danger">{{ form.password2.errors.0 }}</div>
+                                                        {% endif %}
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                    
+                                     <!-- Sélection du rôle -->
+                                     <div class="form-section">
+                                        <label for="password1">Statut</label>
+                                        <div class="d-flex justify-content-between" style="gap: 10px;">
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" id="role_etudiant" name="role" value="etudiant" required {% if form.role.value == "etudiant" %}checked{% endif %}>
+                                                <label class="form-check-label" for="role_etudiant">Étudiant</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" id="role_instructeur" name="role" value="instructeur" required {% if form.role.value == "instructeur" %}checked{% endif %}>
+                                                <label class="form-check-label" for="role_instructeur">Instructeur</label>
+                                            </div>
+                                            <div class="form-check form-check-inline">
+                                                <input type="radio" id="role_responsable" name="role" value="responsable" required {% if form.role.value == "responsable" %}checked{% endif %}>
+                                                <label class="form-check-label" for="role_responsable">Responsable</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    
+                    
+                                        <!-- Mot de passe -->
+                                     
+                                        <!-- Capture d'image en temps réel -->
+                                        <div class="form-section">
+                                            <label>Capture pour  la reconnaissance faciale</label>
+                                            <video id="video" width="320" height="240" autoplay></video>
+                                            <button type="button" onclick="captureImage()">Capture</button>
+                                            <canvas id="canvas" width="320" height="240" style="display:none;"></canvas>
+                                            <input type="hidden" name="profile_image_data" id="profile_image_data">
+                                            <p id="capture-message" class="text-success mt-2">Image captured successfully!</p>
+                                        </div>
+                    
+                                        <!-- Bouton de soumission -->
+                                        <button type="submit" class="btn btn-success btn-block mt-4">Register</button>
+                                    </form>
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
                                 </div>
                             </div>
                         </div>
                     </div>
+<<<<<<< HEAD
                 </div>            
+=======
+                    
+                </div>
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
             </div>
         </div>
         
         <!--================= Wrapper End Here =================-->
 
         <!--================= Footer Section Start Here =================-->
+<<<<<<< HEAD
         <footer id="react-footer" class="react-footer react-footer-two">
             <div class="footer-top">
                 <div class="container">
@@ -255,6 +445,9 @@
                 </div>
             </div>
         </footer>
+=======
+     
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
         <!--================= Footer Section End Here =================-->
         
         <!--================= Scroll to Top Start =================-->
@@ -287,6 +480,56 @@
         <script src="../static/assets/js/plugins.js"></script>       
 		<!--================= Main js =================-->
         <script src="../static/assets/js/main.js"></script>
+<<<<<<< HEAD
+=======
+        <script>
+            function startCamera() {
+                const video = document.getElementById('video');
+                navigator.mediaDevices.getUserMedia({ video: true })
+                    .then((stream) => {
+                        video.srcObject = stream;
+                        video.play();
+                    })
+                    .catch((error) => {
+                        console.error("Error accessing the camera: ", error);
+                    });
+            }
+        
+            function captureImage() {
+                const video = document.getElementById('video');
+                const canvas = document.getElementById('canvas');
+                const context = canvas.getContext('2d');
+                
+                // Dessiner l'image de la vidéo sur le canvas
+                context.drawImage(video, 0, 0, canvas.width, canvas.height);
+                
+                // Obtenir les données de l'image en format base64
+                const imageData = canvas.toDataURL('image/png');
+                document.getElementById('profile_image_data').value = imageData;
+                
+                // Afficher le message de succès
+                const message = document.getElementById('capture-message');
+                message.style.display = 'block';
+                
+                // Afficher l'aperçu de l'image capturée
+                const imagePreview = document.getElementById('image-preview');
+                const previewImage = document.getElementById('preview-image');
+                previewImage.src = imageData;
+                imagePreview.style.display = 'block';
+                
+                // Ajouter une animation pour le message
+                message.classList.add('fade-in');
+                setTimeout(() => {
+                    message.classList.remove('fade-in');
+                }, 3000); // Cache le message après 3 secondes
+            }
+        
+            // Démarrez la caméra lors du chargement de la page
+            document.addEventListener('DOMContentLoaded', (event) => {
+                startCamera();
+            });
+        </script>
+>>>>>>> 40cb6b4e06dbbab782fe37475d72abcde0bf5f41
     </body>
 
 <!-- Mirrored from reactheme.com/products/html/echooling/signup.html by HTTrack Website Copier/3.x [XR&CO'2014], Sun, 22 Sep 2024 13:06:54 GMT -->
