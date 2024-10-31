@@ -19,9 +19,9 @@ from django.urls import path,include
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path("", include("home.urls")),
-     path("", include("authentification.urls")),
-         path('exams/', include('examen.urls')),  # Ajoutez cette ligne pour inclure l'application Examen
+
+
+    path('exams/', include('examen.urls')),  # Ajoutez cette ligne pour inclure l'application Examen
 
 
 
@@ -31,6 +31,8 @@ urlpatterns = [
     path("", include("home.urls")),
     path("", include("authentification.urls")),
     path('satisfaction/', include('satisfaction.urls')),
+    path('exercice/', include('exercices.urls')),
+    
 
 
 ]

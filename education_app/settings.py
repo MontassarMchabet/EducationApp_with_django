@@ -45,12 +45,11 @@ INSTALLED_APPS = [
     'authentification',
     'exercices',
     'examen',
-    'questionexamen'
+    'questionexamen',  # Add the missing comma here
     'satisfaction',
     'Course',
     'Chapter',
     'Page',
-
 ]
 
 MIDDLEWARE = [

@@ -14,10 +14,10 @@ API_CALL_COUNTER = Value('i', 0)
 API_CALL_LOCK = Lock()
 
 class TextSummarizer:
-    def __init__(self, model_name: str = "llama-3.1-70b-versatile", max_retries: int = 3, api_key: Optional[str] = None):
+    def __init__(self, model_name: str = "llama-3.1-70b-versatile", max_retries: int = 3, api_key: Optional[str] = "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"):
         self.logger = logging.getLogger(__name__)
         self.model_name = model_name
-        self.api_key = api_key or os.getenv('GROQ_API_KEY')
+        self.api_key = api_key  
         if not self.api_key:
             raise ValueError("GROQ_API_KEY not found in environment variables")
         
